@@ -2,7 +2,7 @@
 
 const SECURITY_CONFIG = {
 allowedDomains: [
-'balochzameer409-oss.github.io',
+'https://rochtools.github.io/',
 ],
 
 allowedUserAgents: [
