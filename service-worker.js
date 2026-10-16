@@ -1,6 +1,6 @@
-// The Mill Game - Service Worker v2
-const CACHE_NAME = 'mill-game-v3';
-const BASE_PATH = '/The-Mill-Game-online-pwa';
+// The Mill Game - Service Worker v4
+const CACHE_NAME = 'mill-game-v4';
+const BASE_PATH = '/the-mill-game';
 
 const ASSETS_TO_CACHE = [
   BASE_PATH + '/',
