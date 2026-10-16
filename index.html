@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <title>The Mill Game</title>
+
+    <!-- PWA Meta Tags -->
+      <link rel="manifest" href="/The-Mill-Game-online-pwa/manifest.json">
+    <meta name="theme-color" content="#682eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mill Game">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/modals.css">
+</head>
+<body>
+<body>
+   
+
+<audio id="remoteAudio" autoplay style="display: none;"></audio>
+    <div id="loadingScreen">
+    <div class="spinner"></div>
+    <div id="loadingText">Loading...</div>
+</div>
+<div id="errorScreen">
+    <h1>⛔ Access Denied ⛔</h1>
+    <p>This page only works in the official app</p>
+    <p style="margin-top: 20px; font-size: 0.9rem;">Access Denied - Unauthorized Domain</p>
+</div>
+
+<div id="gameContent">
+    <div class="header">
+        <button class="emoji-header-btn" id="emojiHeaderBtn" onclick="toggleEmojiPanel()">😄</button>
+        <div class="title">The Mill Game</div>
+        <button class="menu-btn" onclick="openMenu()">☰</button>
+    </div>
+
+ 
+ <div class="voice-controls" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 1000; background: rgba(26,42,108,0.9); padding: 10px; border-radius: 15px; border: 2px solid gold; display: none;" id="voiceControls">
+     <div style="display: flex; gap: 10px; align-items: center;">
+         <button id="micToggleBtn" style="background: #4CAF50; color: white; border: none; border-radius: 25%; width: 25px; height: 25px; font-size: 20px; cursor: pointer;">
+             <i class="fas fa-microphone"></i>
+         </button>
+         <button id="callToggleBtn" style="background: #2196F3; color: white; border: none; border-radius: 25%; width: 25px; height:20px; font-size: 20px; cursor: pointer;">
+             <i class="fas fa-phone"></i>
+         </button>
+         <div id="voiceStatus" style="color: white; font-size: 14px; min-width: 120px;">Voice is off</div>
+     </div>
+ </div>
+
+<div id="chatPanel" dir="ltr" style="display:none; position:fixed; bottom:70px; right:10px; width:280px; max-height:400px; background:rgba(26,42,108,0.95); border:2px solid gold; border-radius:15px; z-index:1001; flex-direction:column; overflow:hidden;">
+  <div style="background:linear-gradient(135deg,#1a2a6c,#b21f1f); padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+    <span style="color:gold; font-weight:bold; font-size:14px;">💬 Chat</span>
+    <button onclick="toggleChatPanel()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✕</button>
+  </div>
+  <div id="chatMessages" style="flex:1; overflow-y:auto; padding:8px; max-height:250px; display:flex; flex-direction:column; gap:6px;"></div>
+  <div style="padding:6px 8px; border-top:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; width:100%; box-sizing:border-box; overflow:hidden;">
+    <button id="voiceMsgBtn" onmousedown="startVoiceRecord(event)" onmouseup="stopVoiceRecord(event)" onmouseleave="stopVoiceRecord(event)" ontouchstart="startVoiceRecord(event)" ontouchend="stopVoiceRecord(event)" ontouchcancel="stopVoiceRecord(event)" title="Hold to talk" style="background:#2196F3; border:none; border-radius:50%; min-width:30px; width:30px; height:30px; cursor:pointer; font-size:12px; color:white; flex-shrink:0; display:flex; align-items:center; justify-content:center; user-select:none; -webkit-user-select:none;"><i class="fas fa-microphone"></i></button>
+    <input id="chatInput" type="text" placeholder="Type a message..." maxlength="100"
+      style="flex:1; width:0; min-width:0; padding:5px 10px; border-radius:20px; border:1px solid gold; background:rgba(255,255,255,0.1); color:white; font-size:12px; outline:none; box-sizing:border-box;"
+      onkeydown="if(event.key==='Enter') sendChatMessage()">
+    <button onclick="sendChatMessage()" style="background:gold; border:none; border-radius:50%; min-width:30px; width:30px; height:30px; cursor:pointer; font-size:14px; flex-shrink:0; display:flex; align-items:center; justify-content:center;">➤</button>
+  </div>
+</div>
+
+<button id="chatToggleBtn" onclick="toggleChatPanel()" style="display:none; position:fixed; bottom:6px; right:15px; z-index:999; background:linear-gradient(135deg,#6a11cb,#2575fc); color:white; border:none; border-radius:50%; width:56px; height:56px; cursor:pointer; box-shadow:0 4px 15px rgba(101,11,203,0.5); align-items:center; justify-content:center;">
+  <i class="fas fa-comments" style="font-size:22px;"></i>
+  <span id="chatUnreadDot" style="display:none; position:absolute; top:2px; right:2px; background:red; min-width:18px; height:18px; border-radius:9px; border:2px solid white; font-size:10px; font-weight:bold; color:white; line-height:14px; text-align:center; padding:0 3px;"></span>
+</button>
+
+<!-- Chat message popup -->
+<div id="chatMsgPopup" style="display:none; position:fixed; bottom:70px; right:15px; z-index:998; background:linear-gradient(135deg,#1a2a6c,#b21f1f); border:2px solid gold; border-radius:12px; padding:10px 14px; max-width:230px; box-shadow:0 4px 15px rgba(0,0,0,0.5);">
+  <div id="chatMsgPopupName" style="color:gold; font-size:10px; font-weight:bold; margin-bottom:4px;"></div>
+  <div id="chatMsgPopupText" style="color:white; font-size:13px; word-break:break-word;"></div>
+</div>
+
+    <div class="game-container">
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <div class="game-status" id="phaseIndicator" style="flex:1;">Phase: Placing pieces</div>
+            <div id="spectatorEye" style="display:none; background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.25); border-radius:12px; padding:3px 8px; font-size:13px; white-space:nowrap; color:white;">👁️ <span id="spectatorCount">0</span></div>
+        </div>
+        
+
+        
+        <div class="stats-panel">
+            <div class="stats-title">🏆 Record</div>
+            <div class="history-grid">
+                <div class="history-item">
+                    <div class="history-label">Player 1</div>
+                    <div class="history-value" id="p1-wins">0</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-label">Total Games</div>
+                    <div class="history-value" id="total-games">0</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-label">Player 2</div>
+                    <div class="history-value" id="p2-wins">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="pieces-count">
+            <div class="player-piece-info player1-piece active" id="player1-info">
+                <div class="piece-count" id="p1-count">9</div>
+                <div class="piece-label">Player 1</div>
+                <div class="player-info-online" id="p1-online"></div>
+            </div>
+            <div class="player-piece-info player2-piece" id="player2-info">
+                <div class="piece-count" id="p2-count">9</div>
+                <div class="piece-label">Player 2</div>
+                <div class="player-info-online" id="p2-online"></div>
+            </div>
+        </div>
+
+        <div class="game-board-container">
+            <div class="game-board">
+                <div class="board-inner">
+                    <div class="square outer-square"></div>
+                    <div class="square middle-square"></div>
+                    <div class="square inner-square"></div>
+                    
+                    <div class="connecting-line line-top"></div>
+                    <div class="connecting-line line-bottom"></div>
+                    <div class="connecting-line line-left"></div>
+                    <div class="connecting-line line-right"></div>
+                    
+                    <div class="point" data-pos="0" style="top: 0%; left: 0%;"></div>
+                    <div class="point" data-pos="1" style="top: 0%; left: 50%;"></div>
+                    <div class="point" data-pos="2" style="top: 0%; left: 100%;"></div>
+                    <div class="point" data-pos="3" style="top: 16.67%; left: 16.67%;"></div>
+                    <div class="point" data-pos="4" style="top: 16.67%; left: 50%;"></div>
+                    <div class="point" data-pos="5" style="top: 16.67%; left: 83.33%;"></div>
+                    <div class="point" data-pos="6" style="top: 33.33%; left: 33.33%;"></div>
+                    <div class="point" data-pos="7" style="top: 33.33%; left: 50%;"></div>
+                    <div class="point" data-pos="8" style="top: 33.33%; left: 66.67%;"></div>
+                    <div class="point" data-pos="9" style="top: 50%; left: 0%;"></div>
+                    <div class="point" data-pos="10" style="top: 50%; left: 16.67%;"></div>
+                    <div class="point" data-pos="11" style="top: 50%; left: 33.33%;"></div>
+                    <div class="point" data-pos="12" style="top: 50%; left: 66.67%;"></div>
+                    <div class="point" data-pos="13" style="top: 50%; left: 83.33%;"></div>
+                    <div class="point" data-pos="14" style="top: 50%; left: 100%;"></div>
+                    <div class="point" data-pos="15" style="top: 66.67%; left: 33.33%;"></div>
+                    <div class="point" data-pos="16" style="top: 66.67%; left: 50%;"></div>
+                    <div class="point" data-pos="17" style="top: 66.67%; left: 66.67%;"></div>
+                    <div class="point" data-pos="18" style="top: 83.33%; left: 16.67%;"></div>
+                    <div class="point" data-pos="19" style="top: 83.33%; left: 50%;"></div>
+                    <div class="point" data-pos="20" style="top: 83.33%; left: 83.33%;"></div>
+                    <div class="point" data-pos="21" style="top: 100%; left: 0%;"></div>
+                    <div class="point" data-pos="22" style="top: 100%; left: 50%;"></div>
+                    <div class="point" data-pos="23" style="top: 100%; left: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="notification" id="notification"></div>
+
+    
+    <div class="lobby-modal" id="lobbyModal">
+        <div class="lobby-content">
+            <div class="lobby-title">Online Game</div>
+            <div id="lobbyOptions">
+                <input type="text" class="lobby-input" id="playerName" placeholder="Enter your name" maxlength="15">
+                <button class="lobby-button" onclick="createGame()">Create New Game</button>
+                <button class="lobby-button" onclick="showJoinOptions()">Join a Game</button>
+                <button class="lobby-button secondary" onclick="playOffline()">Play Offline</button>
+                <button class="lobby-button" onclick="playVsAI()" style="background: linear-gradient(135deg, #ff6b35, #f7c59f); color: #1a1a2e; font-weight: bold; border: 2px solid gold; width:100%; display:block;">Play vs Computer</button>
+            </div>
+            <div id="createGameScreen" style="display: none;">
+                <div class="game-code" id="gameCode">----</div>
+                <button class="copy-button" onclick="copyGameCode()">Copy Code</button>
+                <div class="waiting-message">Waiting for the other player <span class="dot-anim">●</span><span class="dot-anim" style="animation-delay:.2s">●</span><span class="dot-anim" style="animation-delay:.4s">●</span></div>
+                <button class="lobby-button secondary" onclick="cancelGame()">Cancel</button>
+            </div>
+            <div id="joinGameScreen" style="display: none;">
+                <input type="text" class="lobby-input" id="gameCodeInput" placeholder="Enter game code" maxlength="6">
+                <button class="lobby-button" onclick="joinGame()">Join</button>
+                <button class="lobby-button secondary" onclick="backToLobby()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-content">
+            <div class="menu-title">Menu</div>
+            <button class="menu-button" onclick="resetGame()">New Game</button>
+            <button class="menu-button" onclick="showRules()">Rules</button>
+            <button class="menu-button" onclick="resetAllStats()">Reset Statistics</button>
+            <button class="menu-button menu-sound-btn" id="menuSoundBtn" onclick="toggleSound()">
+                <i class="fas fa-volume-up" id="menuSoundIcon"></i>&nbsp; Sound On
+            </button>
+            <button class="menu-button" onclick="closeMenu()">Close</button>
+        </div>
+    </div>
+
+    
+    <div class="celebration-modal" id="celebrationModal" onclick="closeCelebration()">
+        <div class="celebration-content">
+            <div class="celebration-emoji">🏆</div>
+            <div class="winner-message" id="winnerMessage">You won!</div>
+            <button class="lobby-button" onclick="playAgain()">Play Another Game</button>
+            <button class="lobby-button secondary" onclick="closeCelebration()">Close</button>
+        </div>
+    </div>
+
+    
+    <div class="loser-modal" id="loserModal">
+        <div class="loser-content">
+            <div class="loser-emoji">😞</div>
+            <div class="loser-message" id="loserMessage">You lost!</div>
+            <div class="loser-sub-message" id="loserSubMessage"></div>
+            <button class="loser-btn retry" onclick="playAgain()">Play Another Game</button>
+            <button class="loser-btn close" onclick="closeLoser()">Close</button>
+        </div>
+    </div>
+
+    
+    <div class="dark-flash" id="darkFlash"></div>
+    <div class="board-flicker" id="boardFlicker"></div>
+    <div class="ghost-eyes" id="ghostEyes">👀</div>
+    <div class="creepy-notification" id="creepyNotification"></div>
+
+    
+    <div class="taunt-popup" id="tauntPopup">
+        <div class="taunt-popup-title">🔥 What do you want to send?</div>
+        <div class="taunt-buttons" id="tauntButtons"></div>
+        <button class="taunt-close-btn" onclick="closeTauntPopup()">Close ✕</button>
+    </div>
+
+    
+    <div class="taunt-balloon" id="tauntBalloon">
+        <div class="taunt-balloon-sender" id="tauntSender"></div>
+        <div class="taunt-balloon-text" id="tauntText"></div>
+    </div>
+</div>
+
+    
+    <div class="emoji-panel" id="emojiPanel">
+        <div class="emoji-panel-title">😄 Send an emoji</div>
+        <div class="emoji-grid" id="emojiGrid"></div>
+        <button class="emoji-panel-close" onclick="toggleEmojiPanel()">Close ✕</button>
+    </div>
+
+    
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Game Scripts: order matters -->
+    <script src="js/state.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/game-core.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/online-firebase.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/taunts-creepy.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/security.js"></script>
+    <script src="js/pwa-register.js"></script>
+</body>
+</html>
