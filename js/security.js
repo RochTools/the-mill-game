@@ -2,7 +2,7 @@
 
 const SECURITY_CONFIG = {
 allowedDomains: [
-'https://rochtools.github.io',
+'rochtools.github.io',
 ],
 
 allowedUserAgents: [
