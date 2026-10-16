@@ -1,0 +1,491 @@
+/* Mill Game - Modals & Creepy/Taunt Effects Styles */
+
+.menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+.menu-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 300px;
+        }
+
+.menu-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+.menu-button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #FFD700;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+.menu-button:hover {
+            background-color: #FFA500;
+            transform: scale(1.05);
+        }
+
+.celebration-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+.celebration-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
+            max-width: 90%;
+            width: 350px;
+        }
+
+.celebration-emoji {
+            font-size: 4rem;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
+        }
+
+.loser-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+.loser-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 35px 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            border: 2px solid #e94560;
+            max-width: 90%;
+            width: 350px;
+            animation: shake-modal 0.5s ease;
+        }
+
+@keyframes shake-modal {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-15px); }
+            40% { transform: translateX(15px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+.loser-emoji {
+            font-size: 4rem;
+            margin: 10px 0;
+            animation: fall-down 0.6s ease forwards;
+        }
+
+@keyframes fall-down {
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+.loser-message {
+            font-size: 1.8rem;
+            color: #e94560;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-weight: bold;
+        }
+
+.loser-sub-message {
+            font-size: 1rem;
+            color: #a8a8b3;
+            margin-bottom: 20px;
+        }
+
+.loser-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+.loser-btn.retry {
+            background: linear-gradient(135deg, #e94560, #c23152);
+            color: white;
+        }
+
+.loser-btn.retry:hover {
+            background: linear-gradient(135deg, #ff5a7a, #e94560);
+            transform: scale(1.03);
+        }
+
+.loser-btn.close {
+            background: #333;
+            color: #aaa;
+        }
+
+.loser-btn.close:hover {
+            background: #444;
+            transform: scale(1.03);
+        }
+
+.ghost-eyes {
+            position: fixed;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 3rem;
+            filter: drop-shadow(0 0 12px rgba(255, 50, 50, 1));
+            animation: eye-glow 1.5s infinite alternate;
+        }
+
+.ghost-eyes.visible { opacity: 1; }
+
+@keyframes eye-glow {
+            0% { filter: drop-shadow(0 0 8px rgba(255,50,50,0.8)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255,80,80,1)); }
+        }
+
+.blood-splatter {
+            position: fixed;
+            z-index: 998;
+            pointer-events: none;
+            opacity: 0;
+            font-size: 1.8rem;
+            animation: blood-drip 1.2s ease forwards;
+        }
+
+@keyframes blood-drip {
+            0%   { opacity: 0.9; transform: translateY(0) scale(1); }
+            60%  { opacity: 0.85; transform: translateY(30px) scale(1); }
+            100% { opacity: 0; transform: translateY(60px) scale(0.6); }
+        }
+
+.dark-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 997;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+.dark-flash.active { opacity: 1; }
+
+.creepy-notification {
+            position: fixed;
+            top: 65px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: rgba(10, 0, 0, 0.95);
+            border: 2px solid #8b0000;
+            color: #cc2222;
+            padding: 12px 20px;
+            border-radius: 12px;
+            z-index: 3500;
+            display: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), inset 0 0 20px rgba(139,0,0,0.15);
+            animation: creepy-appear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            letter-spacing: 1px;
+            max-width: 90%;
+        }
+
+.creepy-notification.visible {
+            display: block;
+        }
+
+@keyframes creepy-appear {
+            0%   { transform: translateX(-50%) scale(0); opacity: 0; }
+            70%  { transform: translateX(-50%) scale(1.08); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+
+.loser-modal.creepy-active .loser-content {
+            border-color: #8b0000 !important;
+            box-shadow: 0 0 40px rgba(139,0,0,0.5), inset 0 0 30px rgba(139,0,0,0.1) !important;
+        }
+
+.loser-modal.creepy-active .loser-emoji {
+            animation: shake-emoji 0.4s ease infinite alternate !important;
+        }
+
+@keyframes shake-emoji {
+            0%   { transform: rotate(-8deg) scale(1); }
+            100% { transform: rotate(8deg) scale(1.1); }
+        }
+
+.board-flicker {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%);
+            z-index: 996;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+.board-flicker.active { opacity: 1; }
+
+.taunt-popup {
+            display: none;
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #e94560;
+            border-radius: 16px;
+            padding: 10px 12px;
+            z-index: 3100;
+            box-shadow: 0 -4px 20px rgba(233, 69, 96, 0.4);
+            animation: taunt-slide-up 0.35s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+            width: 95%;
+            max-width: 380px;
+        }
+
+.taunt-popup.visible { display: block; }
+
+@keyframes taunt-slide-up {
+            0%   { transform: translateX(-50%) translateY(100%); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0);    opacity: 1; }
+        }
+
+.taunt-popup-title {
+            text-align: center;
+            color: #e94560;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+.taunt-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+.taunt-btn {
+            background: rgba(233, 69, 96, 0.15);
+            border: 1px solid rgba(233, 69, 96, 0.4);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.78rem;
+            padding: 8px 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+            line-height: 1.25;
+        }
+
+.taunt-btn:hover {
+            background: rgba(233, 69, 96, 0.35);
+            border-color: #e94560;
+            transform: scale(1.05);
+        }
+
+.taunt-btn:active { transform: scale(0.95); }
+
+.taunt-close-btn {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+.taunt-close-btn:hover { color: #aaa; }
+
+.taunt-balloon {
+            display: none;
+            position: fixed;
+            top: 58px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.85);
+            background: linear-gradient(135deg, #fff5f5, #fff0f0);
+            border: 2px solid #e94560;
+            border-radius: 18px 18px 18px 4px;
+            padding: 10px 16px;
+            z-index: 3100;
+            box-shadow: 0 4px 18px rgba(233,69,96,0.35);
+            max-width: 85%;
+            width: 320px;
+            text-align: center;
+            animation: balloon-pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+        }
+
+.taunt-balloon.visible { display: block; }
+
+@keyframes balloon-pop {
+            0%   { transform: translateX(-50%) scale(0); opacity: 0; }
+            60%  { transform: translateX(-50%) scale(1.08); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
+
+.taunt-balloon-sender {
+            font-size: 0.7rem;
+            color: #e94560;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+.taunt-balloon-text {
+            font-size: 1.05rem;
+            color: #222;
+            font-weight: bold;
+        }
+
+.emoji-header-btn {
+            background: #665eea;
+            border: 2px solid gold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 45px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+.emoji-header-btn:hover {
+            background: #000;
+            transform: scale(1.1);
+        }
+
+.emoji-header-btn:active { transform: scale(0.92); }
+
+.menu-sound-btn {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+.menu-sound-btn.muted {
+            background-color: #555 !important;
+            color: #aaa !important;
+        }
+
+.emoji-panel {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-top: 2px solid #e94560;
+            border-radius: 18px 18px 0 0;
+            padding: 12px 10px 10px;
+            z-index: 3200;
+            box-shadow: 0 -6px 24px rgba(0,0,0,0.45);
+            animation: panel-slide-up 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+        }
+
+.emoji-panel.visible { display: block; }
+
+@keyframes panel-slide-up {
+            0%   { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0);    opacity: 1; }
+        }
+
+.emoji-panel-title {
+            text-align: center;
+            color: #e94560;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+.emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            justify-items: center;
+        }
+
+.emoji-btn {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            font-size: 1.5rem;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+.emoji-btn:hover {
+            background: rgba(233,69,96,0.25);
+            border-color: #e94560;
+            transform: scale(1.15);
+        }
+
+.emoji-btn:active { transform: scale(0.9); }
+
+.emoji-panel-close {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 3px;
+        }
+
+.emoji-panel-close:hover { color: #aaa; }
