@@ -8,14 +8,14 @@
         
         
         const audio = {
-            place: new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/Place.Click .mp3'),
-            move:  new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/whoosh.mp3'),
-            remove: new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/Remove.mp3'),
-            mill:  new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/Mill.mp3'),
-            win:   new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/Win.mp3'),
-            error: new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/error.mp3'),
-            click: new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/Place.Click .mp3'),
-            notification: new Audio('https://balochzameer409-oss.github.io/The-Mill-Game-online-pwa/sounds/notification.mp3')
+            place: new Audio('sounds/Place.Click .mp3'),
+            move:  new Audio('sounds/whoosh.mp3'),
+            remove: new Audio('sounds/Remove.mp3'),
+            mill:  new Audio('sounds/Mill.mp3'),
+            win:   new Audio('sounds/Win.mp3'),
+            error: new Audio('sounds/error.mp3'),
+            click: new Audio('sounds/Place.Click .mp3'),
+            notification: new Audio('sounds/notification.mp3')
         };
 
         let soundEnabled = true;

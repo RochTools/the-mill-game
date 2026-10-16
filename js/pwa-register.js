@@ -3,7 +3,7 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      const reg = await navigator.serviceWorker.register('/The-Mill-Game-online-pwa/service-worker.js', { scope: '/The-Mill-Game-online-pwa/' });
+      const reg = await navigator.serviceWorker.register('service-worker.js', { scope: './' });
       console.log('[PWA] Service Worker registered:', reg.scope);
     } catch (err) {
       console.warn('[PWA] Service Worker failed:', err);
