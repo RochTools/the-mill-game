@@ -1,13 +1,14 @@
-// The Mill Game - Service Worker v4
+// The Mill Game - Service Worker v2
 const CACHE_NAME = 'mill-game-v4';
-const BASE_PATH = '/the-mill-game';
+// Use the folder this service worker lives in, so it works from any path
+const BASE_PATH = self.registration.scope;
 
 const ASSETS_TO_CACHE = [
-  BASE_PATH + '/',
-  BASE_PATH + '/index.html',
-  BASE_PATH + '/manifest.json',
-  BASE_PATH + '/icon-192.png',
-  BASE_PATH + '/icon-512.png',
+  BASE_PATH,
+  BASE_PATH + 'index.html',
+  BASE_PATH + 'manifest.json',
+  BASE_PATH + 'icon-192.png',
+  BASE_PATH + 'icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
 ];
 
@@ -16,10 +17,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
-        BASE_PATH + '/index.html',
-        BASE_PATH + '/manifest.json',
-        BASE_PATH + '/icon-192.png',
-        BASE_PATH + '/icon-512.png',
+        BASE_PATH + 'index.html',
+        BASE_PATH + 'manifest.json',
+        BASE_PATH + 'icon-192.png',
+        BASE_PATH + 'icon-512.png',
       ]).catch(() => {});
     })
   );
@@ -65,7 +66,7 @@ self.addEventListener('fetch', (event) => {
         return caches.match(event.request).then((cached) => {
           if (cached) return cached;
           if (event.request.headers.get('accept').includes('text/html')) {
-            return caches.match(BASE_PATH + '/index.html');
+            return caches.match(BASE_PATH + 'index.html');
           }
         });
       })
